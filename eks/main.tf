@@ -5,7 +5,7 @@ module "eks" {
   name               = "eks-lab"
   kubernetes_version = "1.33"
 
-  addons = {
+  addons = { #create the cluster with no addons
     # coredns                = {}
     # eks-pod-identity-agent = {
     #   before_compute = true
