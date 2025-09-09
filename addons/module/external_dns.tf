@@ -1,13 +1,13 @@
 resource "helm_release" "external_dns" {
-  count            = var.external_dns_enable ? 1 : 0
-  name             = "external-dns"
-  repository       = "oci://registry-1.docker.io/bitnamicharts"
-  version          = var.external_dns_version
-  chart            = "external-dns"
-  namespace        = "kube-system"
+  count      = var.external_dns_enable ? 1 : 0
+  name       = "external-dns"
+  repository = "oci://registry-1.docker.io/bitnamicharts"
+  version    = var.external_dns_version
+  chart      = "external-dns"
+  namespace  = "kube-system"
   values = [
     templatefile("./module/helm-values/values_external_dns.yaml", {
-      external_dns_hosted_zone_id = "${var.external_dns_hosted_zone_id}"
+      external_dns_hosted_zone_id     = "${var.external_dns_hosted_zone_id}"
       external_dns_hosted_zone_domain = "${var.external_dns_hosted_zone_domain}"
     })
   ]
@@ -56,7 +56,7 @@ resource "aws_iam_role" "external_dns" {
 }
 
 resource "aws_iam_role_policy_attachment" "attach_external_dns" {
-  count = var.external_dns_enable ? 1 : 0
+  count      = var.external_dns_enable ? 1 : 0
   role       = aws_iam_role.external_dns[count.index].name
   policy_arn = aws_iam_policy.external_dns_policy[count.index].arn
 }
@@ -75,8 +75,8 @@ resource "aws_iam_policy" "external_dns_policy" {
         Resource = ["arn:aws:route53:::hostedzone/${var.external_dns_hosted_zone_id}"]
       },
       {
-        Effect   = "Allow"
-        Action   = [
+        Effect = "Allow"
+        Action = [
           "route53:ListHostedZones",
           "route53:ListResourceRecordSets"
         ]

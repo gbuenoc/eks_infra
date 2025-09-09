@@ -197,3 +197,14 @@ variable "cluster_version" {
   type    = number
   default = null
 }
+
+# cilium
+variable "cilium_enable" {
+  type    = string
+  default = null
+}
+
+variable "cilium_version" {
+  type    = string
+  default = null
+}

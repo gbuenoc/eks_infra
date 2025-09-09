@@ -1,0 +1,18 @@
+k8sServiceHost: ${k8sServiceHost}
+k8sServicePort: ${k8sServicePort}
+
+eni:
+  enabled: true
+
+ipam:
+  mode: eni
+
+routingMode: native
+endpointRoutes:
+  enabled: true
+
+egressMasqueradeInterfaces: "eth+"
+kubeProxyReplacement: true
+
+clusterPool:
+  clusterPoolIPv4PodCIDRList: ["100.64.0.0/16"]

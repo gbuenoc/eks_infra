@@ -18,7 +18,7 @@ resource "helm_release" "karpenter" {
 resource "aws_iam_role" "eks_karpenter_role_node" {
   count = var.karpenter_enable ? 1 : 0
   name  = "AmazonEKSKarpenterRoleNode_terraform"
-    assume_role_policy = jsonencode({
+  assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
@@ -107,12 +107,12 @@ resource "aws_iam_policy" "eks_karpenter_policy" {
   description = "Policy to karpenter"
 
   policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    "Version" : "2012-10-17",
+    "Statement" : [
       {
-        "Sid": "Karpenter",
-        "Effect": "Allow",
-        "Action": [
+        "Sid" : "Karpenter",
+        "Effect" : "Allow",
+        "Action" : [
           "ssm:GetParameter",
           "ec2:DescribeImages",
           "ec2:RunInstances",
@@ -129,99 +129,99 @@ resource "aws_iam_policy" "eks_karpenter_policy" {
           "ec2:DescribeSpotPriceHistory",
           "pricing:GetProducts"
         ],
-        "Resource": "*"
+        "Resource" : "*"
       },
       {
-        "Sid": "ConditionalEC2Termination",
-        "Effect": "Allow",
-        "Action": "ec2:TerminateInstances",
-        "Resource": "*",
-        "Condition": {
-          "StringLike": {
-            "ec2:ResourceTag/karpenter.sh/nodepool": "*"
+        "Sid" : "ConditionalEC2Termination",
+        "Effect" : "Allow",
+        "Action" : "ec2:TerminateInstances",
+        "Resource" : "*",
+        "Condition" : {
+          "StringLike" : {
+            "ec2:ResourceTag/karpenter.sh/nodepool" : "*"
           }
         }
       },
       {
-        "Sid": "PassNodeIAMRole",
-        "Effect": "Allow",
-        "Action": "iam:PassRole",
-        "Resource": "arn:aws:iam::${local.account_id}:role/AmazonEKSKarpenterRoleNode_terraform"
+        "Sid" : "PassNodeIAMRole",
+        "Effect" : "Allow",
+        "Action" : "iam:PassRole",
+        "Resource" : "arn:aws:iam::${local.account_id}:role/AmazonEKSKarpenterRoleNode_terraform"
       },
       {
-        "Sid": "EKSClusterEndpointLookup",
-        "Effect": "Allow",
-        "Action": "eks:DescribeCluster",
-        "Resource": "arn:aws:eks:${local.region}:${local.account_id}:cluster/${local.cluster_name}"
+        "Sid" : "EKSClusterEndpointLookup",
+        "Effect" : "Allow",
+        "Action" : "eks:DescribeCluster",
+        "Resource" : "arn:aws:eks:${local.region}:${local.account_id}:cluster/${local.cluster_name}"
       },
       {
-        "Sid": "AllowScopedInstanceProfileCreationActions",
-        "Effect": "Allow",
-        "Action": ["iam:CreateInstanceProfile"],
-        "Resource": "*",
-        "Condition": {
-          "StringEquals": {
-            "aws:RequestTag/kubernetes.io/cluster/${local.cluster_name}": "owned",
-            "aws:RequestTag/topology.kubernetes.io/region": "${local.region}"
+        "Sid" : "AllowScopedInstanceProfileCreationActions",
+        "Effect" : "Allow",
+        "Action" : ["iam:CreateInstanceProfile"],
+        "Resource" : "*",
+        "Condition" : {
+          "StringEquals" : {
+            "aws:RequestTag/kubernetes.io/cluster/${local.cluster_name}" : "owned",
+            "aws:RequestTag/topology.kubernetes.io/region" : "${local.region}"
           },
-          "StringLike": {
-            "aws:RequestTag/karpenter.k8s.aws/ec2nodeclass": "*"
+          "StringLike" : {
+            "aws:RequestTag/karpenter.k8s.aws/ec2nodeclass" : "*"
           }
         }
       },
       {
-        "Sid": "AllowScopedInstanceProfileTagActions",
-        "Effect": "Allow",
-        "Action": ["iam:TagInstanceProfile"],
-        "Resource": "*",
-        "Condition": {
-          "StringEquals": {
-            "aws:ResourceTag/kubernetes.io/cluster/${local.cluster_name}": "owned",
-            "aws:ResourceTag/topology.kubernetes.io/region": "${local.region}",
-            "aws:RequestTag/kubernetes.io/cluster/${local.cluster_name}": "owned",
-            "aws:RequestTag/topology.kubernetes.io/region": "${local.region}"
+        "Sid" : "AllowScopedInstanceProfileTagActions",
+        "Effect" : "Allow",
+        "Action" : ["iam:TagInstanceProfile"],
+        "Resource" : "*",
+        "Condition" : {
+          "StringEquals" : {
+            "aws:ResourceTag/kubernetes.io/cluster/${local.cluster_name}" : "owned",
+            "aws:ResourceTag/topology.kubernetes.io/region" : "${local.region}",
+            "aws:RequestTag/kubernetes.io/cluster/${local.cluster_name}" : "owned",
+            "aws:RequestTag/topology.kubernetes.io/region" : "${local.region}"
           },
-          "StringLike": {
-            "aws:ResourceTag/karpenter.k8s.aws/ec2nodeclass": "*",
-            "aws:RequestTag/karpenter.k8s.aws/ec2nodeclass": "*"
+          "StringLike" : {
+            "aws:ResourceTag/karpenter.k8s.aws/ec2nodeclass" : "*",
+            "aws:RequestTag/karpenter.k8s.aws/ec2nodeclass" : "*"
           }
         }
       },
       {
-        "Sid": "AllowScopedInstanceProfileActions",
-        "Effect": "Allow",
-        "Action": [
+        "Sid" : "AllowScopedInstanceProfileActions",
+        "Effect" : "Allow",
+        "Action" : [
           "iam:AddRoleToInstanceProfile",
           "iam:RemoveRoleFromInstanceProfile",
           "iam:DeleteInstanceProfile"
         ],
-        "Resource": "*",
-        "Condition": {
-          "StringEquals": {
-            "aws:ResourceTag/kubernetes.io/cluster/${local.cluster_name}": "owned",
-            "aws:ResourceTag/topology.kubernetes.io/region": "${local.region}"
+        "Resource" : "*",
+        "Condition" : {
+          "StringEquals" : {
+            "aws:ResourceTag/kubernetes.io/cluster/${local.cluster_name}" : "owned",
+            "aws:ResourceTag/topology.kubernetes.io/region" : "${local.region}"
           },
-          "StringLike": {
-            "aws:ResourceTag/karpenter.k8s.aws/ec2nodeclass": "*"
+          "StringLike" : {
+            "aws:ResourceTag/karpenter.k8s.aws/ec2nodeclass" : "*"
           }
         }
       },
       {
-        "Sid": "AllowInstanceProfileReadActions",
-        "Effect": "Allow",
-        "Action": "iam:GetInstanceProfile",
-        "Resource": "*"
+        "Sid" : "AllowInstanceProfileReadActions",
+        "Effect" : "Allow",
+        "Action" : "iam:GetInstanceProfile",
+        "Resource" : "*"
       },
       {
-        "Sid": "AllowInterruptionQueueAccess",
-        "Effect": "Allow",
-        "Action": [
+        "Sid" : "AllowInterruptionQueueAccess",
+        "Effect" : "Allow",
+        "Action" : [
           "sqs:GetQueueUrl",
           "sqs:ReceiveMessage",
           "sqs:DeleteMessage",
           "sqs:GetQueueAttributes"
         ],
-        "Resource": "arn:aws:sqs:${local.region}:${local.account_id}:${local.cluster_name}"
+        "Resource" : "arn:aws:sqs:${local.region}:${local.account_id}:${local.cluster_name}"
       }
     ]
   })
@@ -236,8 +236,8 @@ resource "aws_iam_role_policy_attachment" "attach_karpenter_controller_role_poli
 
 ############################################## Karpenter Interruption Queue for Spot Instance #########################################
 resource "aws_sqs_queue" "karpenter_interruption_queue" {
-  count      = var.karpenter_enable ? 1 : 0
-  name = local.cluster_name
+  count = var.karpenter_enable ? 1 : 0
+  name  = local.cluster_name
   depends_on = [
     helm_release.karpenter
   ]

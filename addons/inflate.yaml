@@ -12,8 +12,6 @@ spec:
       labels:
         app: inflate
     spec:
-      nodeSelector:
-        workload: app
       terminationGracePeriodSeconds: 0
       containers:
         - name: inflate
