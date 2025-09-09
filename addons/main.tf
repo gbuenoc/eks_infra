@@ -5,11 +5,15 @@ module "eks_core_apps" {
 
 
   # kube_proxy - https://docs.aws.amazon.com/pt_br/eks/latest/userguide/managing-kube-proxy.html
-  kube_proxy_enable  = false
+  kube_proxy_enable  = true
   kube_proxy_version = "v1.33.3-eksbuild.6"
 
+  # coredns - https://docs.aws.amazon.com/pt_br/eks/latest/userguide/managing-coredns.html
+  coredns_enable  = true
+  coredns_version = "v1.12.3-eksbuild.1"
+
   # vpc_cni - https://artifacthub.io/packages/helm/aws/aws-vpc-cni
-  vpc_cni_enable      = false
+  vpc_cni_enable      = true
   vpc_cni_version     = "1.20.1"
   subnets_filter_name = "private"        # subnets da rede CNI
   sg_filter_name      = "eks-cluster-sg" # sg do node
@@ -20,7 +24,7 @@ module "eks_core_apps" {
   alb_controller_version = "1.13.4"
 
   # karpenter - https://artifacthub.io/packages/helm/aws-karpenter-crd/karpenter-crd
-  karpenter_enable  = false
+  karpenter_enable  = true
   karpenter_version = "1.6.3"
   cluster_version   = "1.33"
   capacity_type     = "on-demand"
@@ -32,7 +36,7 @@ module "eks_core_apps" {
   autoscaler_version = "9.50.1"
 
   # metrics_server - https://artifacthub.io/packages/helm/metrics-server/metrics-server
-  metrics_server_enable  = false
+  metrics_server_enable  = true
   metrics_server_version = "3.13.0"
 
   # nginx_controler - https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx
