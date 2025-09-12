@@ -17,6 +17,12 @@ resource "helm_release" "vpc_cni" {
       az_3     = "${local.az_3}"
     })
   ]
+
+  depends_on = [ 
+    aws_eks_addon.coredns,
+    aws_eks_addon.kube_proxy
+    ]
+
 }
 
 resource "kubernetes_service_account_v1" "vpc_cni_sa" {

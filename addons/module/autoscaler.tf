@@ -28,7 +28,7 @@ resource "kubernetes_service_account_v1" "aws_cluster_autoscaler_sa" {
   }
 }
 
-# ROLES e POLICY
+# ROLES and POLICY
 resource "aws_iam_role" "eks_cluster_autoscaler_role" {
   count = var.autoscaler_enable ? 1 : 0
 

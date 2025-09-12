@@ -53,19 +53,15 @@ variable "metrics_server_version" {
 # vpc_cni
 variable "vpc_cni_enable" {
   type    = bool
-  default = false
 }
 variable "vpc_cni_version" {
   type    = string
-  default = null
 }
 variable "subnets_filter_name" {
   type    = string
-  default = null
 }
 variable "sg_filter_name" {
   type    = string
-  default = null
 }
 
 # kube_proxy
@@ -189,22 +185,16 @@ variable "disk_iops" {
   type    = number
   default = null
 }
-variable "capacity_type" {
-  type    = string
-  default = null
+variable "capacity_type_pool_tools" {
+  type    = list(string)
+  default = ["spot"]
+}
+
+variable "capacity_type_pool_apps" {
+  type    = list(string)
+  default = ["spot"]
 }
 variable "cluster_version" {
   type    = number
-  default = null
-}
-
-# cilium
-variable "cilium_enable" {
-  type    = string
-  default = null
-}
-
-variable "cilium_version" {
-  type    = string
   default = null
 }
