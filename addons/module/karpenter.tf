@@ -295,6 +295,10 @@ resource "kubectl_manifest" "karpenter_node_pool_tools" {
             name: bottlerocket
             kind: EC2NodeClass
             group: karpenter.k8s.aws
+          startupTaints:
+            - key: node.cilium.io/agent-not-ready
+              value: "true"
+              effect: NoSchedule
           requirements:
             - key: "karpenter.k8s.aws/instance-category"
               operator: In
@@ -343,6 +347,10 @@ resource "kubectl_manifest" "karpenter_node_pool_apps" {
             name: bottlerocket
             kind: EC2NodeClass
             group: karpenter.k8s.aws
+          startupTaints:
+            - key: node.cilium.io/agent-not-ready
+              value: "true"
+              effect: NoSchedule
           requirements:
             - key: "karpenter.k8s.aws/instance-category"
               operator: In
