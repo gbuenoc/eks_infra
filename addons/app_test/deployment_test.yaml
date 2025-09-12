@@ -5,7 +5,7 @@ metadata:
   labels:
     app: app-test
 spec:
-  replicas: 2
+  replicas: 6
   selector:
     matchLabels:
       app: app-test
@@ -28,11 +28,13 @@ spec:
               memory: 1Gi
       affinity:
         podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - app-test
-              topologyKey: topology.kubernetes.io/zone
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - app-test
+                topologyKey: topology.kubernetes.io/zone
