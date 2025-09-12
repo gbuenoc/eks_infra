@@ -1,4 +1,4 @@
-## Instalar pelas instrucoes em: https://docs.aws.amazon.com/eks/latest/userguide/cost-monitoring.html
+# https://docs.aws.amazon.com/eks/latest/userguide/cost-monitoring.html
 resource "helm_release" "kubecost" {
   count            = var.kubecost_enable ? 1 : 0
   name             = "kubecost"

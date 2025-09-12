@@ -11,21 +11,23 @@ module "eks_core_apps" {
   # vpc_cni - https://artifacthub.io/packages/helm/aws/aws-vpc-cni
   vpc_cni_enable      = false
   vpc_cni_version     = "1.20.1"
-  subnets_filter_name = "private"        # subnets da rede CNI
-  sg_filter_name      = "eks-cluster-sg" # sg do node
+  subnets_filter_name = "pod"            # Subenets for pods
+  sg_filter_name      = "eks-cluster-sg" # Node security group
 
   # aws_load_balancer_controller - https://artifacthub.io/packages/helm/aws/aws-load-balancer-controller
-  #(Necessário add tag na Subnet"kubernetes.io/role/internal-elb:1")
-  alb_controller_enable  = false
+  #For private subnet, add the tag "kubernetes.io/role/internal-elb:1"
+  #For public subnets, add the tag "kubernetes.io/role/elb" = 1
+  alb_controller_enable  = true
   alb_controller_version = "1.13.4"
 
   # karpenter - https://artifacthub.io/packages/helm/aws-karpenter-crd/karpenter-crd
-  karpenter_enable  = false
-  karpenter_version = "1.6.3"
-  cluster_version   = "1.33"
-  capacity_type     = "on-demand"
-  disk_size         = 30
-  disk_iops         = 3000
+  karpenter_enable         = true
+  karpenter_version        = "1.6.3"
+  cluster_version          = "1.33"
+  capacity_type_pool_tools = ["spot"]
+  capacity_type_pool_apps  = ["on-demand"]
+  disk_size                = 30
+  disk_iops                = 3000
 
   # autoscaler - https://artifacthub.io/packages/helm/cluster-autoscaler/cluster-autoscaler
   autoscaler_enable  = false
@@ -36,7 +38,7 @@ module "eks_core_apps" {
   metrics_server_version = "3.13.0"
 
   # nginx_controler - https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx
-  nginx_controler_enable = false
+  nginx_controler_enable = true
   #certificate_arn         = "arn:aws:acm:..."
   nginx_controler_version = "4.13.2"
 
@@ -44,19 +46,19 @@ module "eks_core_apps" {
   kube_dashboard_enable        = false
   kube_dashboard_version       = "7.13.0"
   kube_dashboard_ingress_class = "nginx"
-  kube_dashboard_url           = "kubedashboard.dominio"
+  #kube_dashboard_url           = "kubedashboard.domain"
 
   # kubecost - https://artifacthub.io/packages/helm/kubecost/cost-analyzer
   kubecost_enable        = false
   kubecost_version       = "2.8.2"
   kubecost_ingress_class = "nginx"
-  kubecost_url           = "kubecost.dominio"
+  #kubecost_url           = "kubecost.domain"
 
   # kube_prometheus_stack - https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
   kube_prometheus_stack_enable                = false
   kube_prometheus_stack_version               = "77.5.0"
   kube_prometheus_stack_grafana_ingress_class = "nginx"
-  kube_prometheus_stack_grafana_url           = "grafana.dominio"
+  kube_prometheus_stack_grafana_url           = "grafana.domain"
 
   # aws_ebs_csi_driver - https://artifacthub.io/packages/helm/aws-ebs-csi-driver/aws-ebs-csi-driver
   ebs_csi_driver_enable  = false
@@ -65,7 +67,7 @@ module "eks_core_apps" {
   # external_dns - https://artifacthub.io/packages/helm/bitnami/external-dns
   external_dns_enable             = false
   external_dns_version            = "9.0.3"
-  external_dns_hosted_zone_id     = "Z06655772UAPK5LQZERAO"
-  external_dns_hosted_zone_domain = "dominio"
+  external_dns_hosted_zone_id     = "hosted_zone"
+  external_dns_hosted_zone_domain = "domain"
 
 }

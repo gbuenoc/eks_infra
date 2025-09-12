@@ -8,10 +8,6 @@ resource "helm_release" "karpenter" {
   namespace  = "kube-system"
 
   values = [local.karpenter_values]
-
-  depends_on = [
-    aws_eks_addon.coredns
-  ]
 }
 
 ############################################## AWS Role for Karpenter Node ##############################################
@@ -317,7 +313,7 @@ resource "kubectl_manifest" "karpenter_node_pool_tools" {
               values: ["amd64"]
             - key: "karpenter.sh/capacity-type"
               operator: In
-              values: ["${var.capacity_type}"]
+              values: ${jsonencode(var.capacity_type_pool_tools)}
       limits:
         cpu: 1000
       disruption:
@@ -330,18 +326,18 @@ resource "kubectl_manifest" "karpenter_node_pool_tools" {
   ]
 }
 
-resource "kubectl_manifest" "karpenter_node_pool_app" {
+resource "kubectl_manifest" "karpenter_node_pool_apps" {
   count     = var.karpenter_enable ? 1 : 0
   yaml_body = <<-YAML
     apiVersion: karpenter.sh/v1
     kind: NodePool
     metadata:
-      name: app
+      name: apps
     spec:
       template:
         metadata:
           labels:
-            workload: app
+            workload: apps
         spec:
           nodeClassRef:
             name: bottlerocket
@@ -365,7 +361,7 @@ resource "kubectl_manifest" "karpenter_node_pool_app" {
               values: ["amd64"]
             - key: "karpenter.sh/capacity-type"
               operator: In
-              values: ["${var.capacity_type}"]
+              values: ${jsonencode(var.capacity_type_pool_apps)}
       limits:
         cpu: 1000
       disruption:

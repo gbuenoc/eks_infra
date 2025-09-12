@@ -189,22 +189,16 @@ variable "disk_iops" {
   type    = number
   default = null
 }
-variable "capacity_type" {
-  type    = string
-  default = null
+variable "capacity_type_pool_tools" {
+  type    = list(string)
+  default = ["spot"]
+}
+
+variable "capacity_type_pool_apps" {
+  type    = list(string)
+  default = ["spot"]
 }
 variable "cluster_version" {
   type    = number
-  default = null
-}
-
-# cilium
-variable "cilium_enable" {
-  type    = string
-  default = null
-}
-
-variable "cilium_version" {
-  type    = string
   default = null
 }

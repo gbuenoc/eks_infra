@@ -18,3 +18,7 @@ autoscaling:
 serviceAccount:
   create: false
   name: aws-load-balancer-controller-terraform
+
+
+nodeSelector:
+  workload: tools

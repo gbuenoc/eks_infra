@@ -7,7 +7,7 @@ resource "helm_release" "cilium" {
   version     = var.cilium_version
   repository  = "https://helm.cilium.io"
   wait        = false
-  replace     = true
+  replace     = false
 
   values = [
     templatefile("${path.module}/helm-values/values-cilium.tpl.yaml", {

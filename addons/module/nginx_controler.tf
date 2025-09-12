@@ -1,4 +1,3 @@
-
 resource "helm_release" "ingress_gateway" {
   count            = var.nginx_controler_enable ? 1 : 0
   name             = "ingress"
