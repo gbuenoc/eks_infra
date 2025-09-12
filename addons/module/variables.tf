@@ -53,19 +53,15 @@ variable "metrics_server_version" {
 # vpc_cni
 variable "vpc_cni_enable" {
   type    = bool
-  default = false
 }
 variable "vpc_cni_version" {
   type    = string
-  default = null
 }
 variable "subnets_filter_name" {
   type    = string
-  default = null
 }
 variable "sg_filter_name" {
   type    = string
-  default = null
 }
 
 # kube_proxy

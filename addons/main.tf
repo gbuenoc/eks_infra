@@ -25,7 +25,7 @@ module "eks_core_apps" {
   karpenter_version        = "1.6.3"
   cluster_version          = "1.33"
   capacity_type_pool_tools = ["spot"]
-  capacity_type_pool_apps  = ["on-demand"]
+  capacity_type_pool_apps  = ["spot", "on-demand"]
   disk_size                = 30
   disk_iops                = 3000
 

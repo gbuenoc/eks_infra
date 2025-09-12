@@ -12,7 +12,7 @@ data "aws_eks_cluster_auth" "default" {
 data "aws_subnets" "subnets" {
   filter {
     name   = "tag:Name"
-    values = ["*private*"]
+    values = ["*${var.subnets_filter_name}*"]
   }
 }
 
@@ -29,7 +29,7 @@ data "aws_subnet" "subnet_3" {
 data "aws_security_group" "sg_node" {
   filter {
     name   = "tag:Name"
-    values = ["*eks-cluster*"]
+    values = ["*${var.sg_filter_name}*"]
   }
 }
 
